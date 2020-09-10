@@ -49,8 +49,18 @@ def world_to_tree(world_name):
             summary[summary[id]['parent']].setdefault('children',[]).append(id)
 
     return summary, root
-    
 
+
+def memoize(function):
+    memo = {}
+    def wrapper(*args):
+        if args not in memo:
+            memo[args] = function(*args)
+        return memo[args]
+    return wrapper
+
+
+@memoize
 def node_value(world_name, node_id, gamma=1):
     """
     Returns value of node_id::str, discounted by 0 < gamma::float < 1. 
@@ -106,6 +116,6 @@ if __name__ == "__main__":
 
     # pp.pprint(world_to_tree('courtyard'))
 
-    # print(node_value('cubicles', 'N4932175', 0.55))
+    print(node_value('cubicles', 'N4932175', 0.55))
 
-    values_per_gamma()
+    # values_per_gamma()
